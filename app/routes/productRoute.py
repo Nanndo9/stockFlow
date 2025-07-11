@@ -14,6 +14,20 @@ def create_new_product(
     product: ProductCreate,
     product_service: ProductService = Depends(get_product_service),
 ):
-    """Criar um novo produto"""
     db_product = product_service.create_product_service(product)
+    return db_product
+
+
+@router.get("/list", response_model=list[ProductRead], status_code=status.HTTP_200_OK)
+def list_all_products(product_service: ProductService = Depends(get_product_service)):
+    db_product = product_service.get_all_product()
+    return db_product
+
+
+@router.get("/{product_id}", response_model=ProductRead, status_code=status.HTTP_200_OK)
+def get_by_id(
+    product_id: uuid.UUID,
+    product_service: ProductService = Depends(get_product_service),
+):
+    db_product = product_service.get_by_id(product_id)
     return db_product
