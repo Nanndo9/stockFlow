@@ -18,7 +18,18 @@ class ProductCreate(ProductBase):
 
 
 class ProductRead(ProductBase):
-
     id: uuid.UUID
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ProductUpdate(BaseModel):  
+    sku: Optional[str] = (
+        None
+    )
+    name: Optional[str] = Field(None, min_length=1, max_length=255)
+    description: Optional[str] = Field(None, max_length=500)
+    unit_price: Optional[Decimal] = Field(None, gt=0, decimal_places=2)
+    amount_in_stock: Optional[int] = Field(None, ge=0)
 
     model_config = ConfigDict(from_attributes=True)
